@@ -38,6 +38,9 @@
     .nav-menu a { color: rgba(255,255,255,0.7); font-weight: 600; font-size: 17px; transition: 0.3s; }
     .nav-menu a:hover { color: var(--accent); }
 
+    /* Hamburger Menu Button */
+    .menu-toggle { display: none; color: #fff; font-size: 24px; cursor: pointer; }
+
     /* Scroll Animation */
     .reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.22, 1, 0.36, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
@@ -90,9 +93,9 @@
     .value-card { background: rgba(255,255,255,0.03); padding: 60px 35px; border-radius: 30px; text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
     .value-card .icon { font-size: 54px; margin-bottom: 25px; display: block; }
 
-    /* [5] SERVICES (수정됨: 가로 여백 최소화 및 꽉 찬 디자인) */
+    /* [5] SERVICES */
     #services { background: linear-gradient(180deg, #ffffff 0%, #f1f4f8 100%); position: relative; }
-    #services .container { max-width: 1400px; } /* 컨테이너를 더 넓게 조정 */
+    #services .container { max-width: 1400px; }
     .work-item { 
       display: flex; align-items: center; background: #fff; padding: 50px 60px; 
       border-radius: 40px; border: 1px solid rgba(0,0,0,0.05); margin-bottom: 25px; 
@@ -128,28 +131,13 @@
     .process-item h4 { font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
     .process-item p { font-size: 18px; color: var(--text-gray); line-height: 1.5; }
 
-    /* 이미지 스타일을 반영한 하단 멘트 영역 */
     .process-bottom-note {
-      grid-column: 1 / -1;
-      margin-top: 60px;
-      padding: 10px 30px;
-      border-left: 4px solid var(--point-pink);
-      text-align: left;
-      display: flex;
-      align-items: flex-start;
-      gap: 15px;
+      grid-column: 1 / -1; margin-top: 60px; padding: 10px 30px;
+      border-left: 4px solid var(--point-pink); text-align: left;
+      display: flex; align-items: flex-start; gap: 15px;
     }
-    .process-bottom-note i {
-      font-size: 20px;
-      color: var(--point-pink);
-      margin-top: 5px;
-    }
-    .process-bottom-note p {
-      font-size: 18px;
-      color: var(--text-dark);
-      font-weight: 600;
-      line-height: 1.6;
-    }
+    .process-bottom-note i { font-size: 20px; color: var(--point-pink); margin-top: 5px; }
+    .process-bottom-note p { font-size: 18px; color: var(--text-dark); font-weight: 600; line-height: 1.6; }
 
     /* CONTACT & FOOTER */
     .cta-card { background: #fff; padding: 120px 50px; border-radius: 50px; box-shadow: 0 40px 80px rgba(7, 31, 54, 0.08); text-align: center; }
@@ -159,13 +147,37 @@
     .biz-card li { margin-bottom: 20px; opacity: 0.7; list-style: none; font-size: 19px; }
     .biz-card .name { font-size: 32px; font-weight: 700; opacity: 1; margin-bottom: 30px; }
 
+    /* MOBILE & TABLET OPTIMIZATION */
     @media (max-width: 992px) {
-      .process-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      :root { --nav-height: 70px; }
+      section { padding: 100px 20px; }
+      
+      .menu-toggle { display: block; }
+      
+      .nav-menu {
+        display: none; flex-direction: column; position: absolute; top: var(--nav-height); left: 0;
+        width: 100%; background: rgba(7, 31, 54, 0.98); padding: 30px 0; gap: 20px; text-align: center;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+      .nav-menu.active { display: flex; }
+      
+      .section-title { font-size: 36px; }
+      .section-desc { font-size: 18px; margin-bottom: 50px; }
+      
+      .hero h1 { font-size: 42px; }
+      .hero p { font-size: 20px; }
+
+      .process-grid { grid-template-columns: 1fr; gap: 40px; }
       .process-path { display: none; }
       .process-item:nth-child(even), .process-item:nth-child(odd) { margin: 0; }
+      
       .work-item { flex-direction: column; text-align: center; padding: 40px 24px; }
-      .work-tag { margin-right: 0; margin-bottom: 20px; }
+      .work-tag { margin-right: 0; margin-bottom: 20px; width: 100%; }
       .work-item:hover { padding-left: 24px; }
+      
+      .cta-btn { width: 100%; padding: 20px; font-size: 20px; }
+      .cta-card { padding: 60px 20px; }
+      .footer-flex { flex-direction: column; gap: 40px; }
     }
   </style>
 </head>
@@ -173,6 +185,7 @@
 
   <nav>
     <div class="logo">Rudaworks</div>
+    <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></div>
     <ul class="nav-menu">
       <li><a href="#hero">Home</a></li>
       <li><a href="#problem">About</a></li>
@@ -286,7 +299,7 @@
   <section class="reveal" id="contact" style="background: var(--light-bg); position: relative;">
     <div class="container">
       <div class="cta-card">
-        <h2 class="section-title" style="font-size: 52px;">이론적인 마케팅이 아닌,<br><span class="highlight">가장 현실적인 방향</span>을 제안드립니다.</h2>
+        <h2 class="section-title">이론적인 마케팅이 아닌,<br><span class="highlight">가장 현실적인 방향</span>을 제안드립니다.</h2>
         <p class="section-desc">대표님의 브랜드가 지금 바로 실행할 수 있고,<br>결과로 증명되는 전략만을 약속합니다.</p>
           <a href="https://open.kakao.com/o/sXXXXXXXX" target="_blank" class="cta-btn">
 <i class="fa-solid fa-comment-dots" style="margin-right: 15px;"></i> 1:1 카톡 상담 신청하기</a>
@@ -308,12 +321,28 @@
   </footer>
 
   <script>
+    // Reveal Animation
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('active');
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Mobile Menu Toggle
+    const menuToggle = document.getElementById('mobile-menu');
+    const navMenu = document.querySelector('.nav-menu');
+
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+
+    // Close menu when clicking a link
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+      });
+    });
   </script>
 </body>
 </html>
