@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rudaworks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --navy: #071f36;
+      --navy-light: #0c2d4d;
+      --accent: #8eb4e2;
+      --point-pink: #f2a6a6;
+      --text-dark: #1d1d1f;
+      --text-gray: #6e6e73;
+      --light-bg: #f8f9fa;
+      --white: #ffffff;
+      --nav-height: 90px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: "Pretendard", sans-serif; color: var(--text-dark); line-height: 1.8; word-break: keep-all; background-color: var(--white); font-size: 18px; }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAVIGATION */
+    nav {
+      position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
+      background: rgba(7, 31, 54, 0.95); backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .logo { color: #fff; font-size: 28px; font-weight: 800; letter-spacing: 1px; }
+    .nav-menu { display: flex; gap: 40px; list-style: none; }
+    .nav-menu a { color: rgba(255,255,255,0.7); font-weight: 600; font-size: 17px; transition: 0.3s; }
+    .nav-menu a:hover { color: var(--accent); }
+
+    /* Scroll Animation */
+    .reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.22, 1, 0.36, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* Common Layout */
+    section { padding: 180px 24px; overflow: hidden; }
+    section[id] { scroll-margin-top: var(--nav-height); }
+    .container { max-width: 1300px; margin: 0 auto; position: relative; z-index: 2; }
+    .section-title { font-size: 54px; font-weight: 800; text-align: center; margin-bottom: 30px; letter-spacing: -1.5px; line-height: 1.3; }
+    .section-desc { text-align: center; color: var(--text-gray); font-size: 24px; margin-bottom: 90px; }
+
+    /* [1] HERO */
+    .hero {
+      height: 100vh; background: var(--navy); color: #fff;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      position: relative;
+    }
+    .hero::after {
+      content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(150deg, transparent 40%, rgba(255,255,255,0.03) 40%, rgba(255,255,255,0.03) 40.2%, transparent 40.2%);
+    }
+    .hero h1 { font-size: clamp(45px, 7vw, 82px); font-weight: 800; line-height: 1.2; margin-bottom: 40px; z-index: 10; position: relative; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size: 28px; opacity: 0.8; font-weight: 300; z-index: 10; position: relative; }
+
+    /* [2] PROBLEM */
+    .problem-wrapper {
+      background: #fdfdfd; border-radius: 60px; padding: 120px 40px;
+      box-shadow: 0 20px 60px rgba(7, 31, 54, 0.03); border: 1px solid #f1f1f1; text-align: center;
+    }
+    .highlight { position: relative; display: inline-block; z-index: 1; }
+    .highlight::after { content: ""; position: absolute; left: 0; bottom: 8px; width: 100%; height: 18px; background: var(--accent); opacity: 0.3; z-index: -1; }
+    .problem-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 60px; }
+    .p-card { background: #fff; padding: 50px 30px; border-radius: 30px; border: 1px solid #eee; transition: 0.4s; position: relative; }
+    .p-card i { font-size: 44px; color: #e74c3c; margin-bottom: 25px; display: block; }
+    .p-card h4 { font-size: 24px; font-weight: 700; margin-bottom: 15px; color: var(--navy); }
+    .p-card p { font-size: 18px; color: var(--text-gray); line-height: 1.6; }
+    .p-card:hover { transform: translateY(-10px); border-color: #e74c3c; box-shadow: 0 15px 35px rgba(231, 76, 60, 0.1); }
+
+    /* [3] APPROACH */
+    #approach { background: var(--light-bg); border-radius: 80px; }
+    .approach-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 45px; }
+    .approach-box { padding: 70px 45px; border: 1px solid #eee; border-radius: 40px; text-align: center; background: #fff; transition: 0.4s; }
+    .approach-box:hover { transform: translateY(-15px); box-shadow: 0 30px 60px rgba(0,0,0,0.08); border-color: var(--accent); }
+    .approach-num { width: 60px; height: 60px; background: var(--navy); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 35px; font-weight: 700; font-size: 24px; }
+
+    /* [4] CORE VALUES */
+    .bg-navy { background: var(--navy); color: #fff; }
+    .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+    .value-card { background: rgba(255,255,255,0.03); padding: 60px 35px; border-radius: 30px; text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+    .value-card .icon { font-size: 54px; margin-bottom: 25px; display: block; }
+
+    /* [5] SERVICES (수정됨: 가로 여백 최소화 및 꽉 찬 디자인) */
+    #services { background: linear-gradient(180deg, #ffffff 0%, #f1f4f8 100%); position: relative; }
+    #services .container { max-width: 1400px; } /* 컨테이너를 더 넓게 조정 */
+    .work-item { 
+      display: flex; align-items: center; background: #fff; padding: 50px 60px; 
+      border-radius: 40px; border: 1px solid rgba(0,0,0,0.05); margin-bottom: 25px; 
+      transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 4px 20px rgba(0,0,0,0.02); cursor: default;
+    }
+    .work-item:hover { 
+      transform: translateY(-10px) scale(1.005); border-color: var(--navy); 
+      box-shadow: 0 25px 50px rgba(7, 31, 54, 0.1); padding-left: 80px;
+    }
+    .work-tag { 
+      background: var(--navy); color: #fff; padding: 15px 35px; border-radius: 15px; 
+      font-size: 18px; font-weight: 700; margin-right: 50px; min-width: 200px; text-align: center; transition: 0.3s;
+    }
+    .work-item:hover .work-tag { background: var(--accent); color: var(--navy); }
+    .work-item h3 { font-size: 32px; font-weight: 700; margin-bottom: 10px; transition: 0.3s; color: var(--navy); }
+    .work-item p { font-size: 21px; color: var(--text-gray); flex: 1; }
+
+    /* [6] PROCESS */
+    .process-container { max-width: 1100px; margin: 0 auto; position: relative; padding: 60px 0; }
+    .process-path { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; border-top: 3px dashed #ddd; transform: translateY(-50%); z-index: 1; }
+    .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; position: relative; z-index: 2; }
+    .process-item { text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .process-item:nth-child(even) { margin-top: 120px; }
+    .process-item:nth-child(odd) { margin-bottom: 120px; }
+    .process-icon-box {
+      width: 90px; height: 90px; background: #fff; border: 3px solid var(--point-pink); 
+      border-radius: 50% 50% 50% 5px; display: flex; align-items: center; justify-content: center;
+      font-size: 32px; color: var(--navy); margin-bottom: 25px; transform: rotate(-45deg); transition: 0.4s;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+    .process-icon-box i { transform: rotate(45deg); }
+    .process-item:hover .process-icon-box { background: var(--navy); border-color: var(--navy); color: #fff; transform: rotate(-45deg) scale(1.1); }
+    .process-item h4 { font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+    .process-item p { font-size: 18px; color: var(--text-gray); line-height: 1.5; }
+
+    /* 이미지 스타일을 반영한 하단 멘트 영역 */
+    .process-bottom-note {
+      grid-column: 1 / -1;
+      margin-top: 60px;
+      padding: 10px 30px;
+      border-left: 4px solid var(--point-pink);
+      text-align: left;
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
+    .process-bottom-note i {
+      font-size: 20px;
+      color: var(--point-pink);
+      margin-top: 5px;
+    }
+    .process-bottom-note p {
+      font-size: 18px;
+      color: var(--text-dark);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    /* CONTACT & FOOTER */
+    .cta-card { background: #fff; padding: 120px 50px; border-radius: 50px; box-shadow: 0 40px 80px rgba(7, 31, 54, 0.08); text-align: center; }
+    .cta-btn { display: inline-block; padding: 28px 72px; background: var(--navy); color: #fff; border-radius: 15px; font-weight: 700; font-size: 26px; transition: 0.3s; }
+    footer { background: #041425; color: #fff; padding: 120px 24px; }
+    .footer-flex { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 70px; }
+    .biz-card li { margin-bottom: 20px; opacity: 0.7; list-style: none; font-size: 19px; }
+    .biz-card .name { font-size: 32px; font-weight: 700; opacity: 1; margin-bottom: 30px; }
+
+    @media (max-width: 992px) {
+      .process-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .process-path { display: none; }
+      .process-item:nth-child(even), .process-item:nth-child(odd) { margin: 0; }
+      .work-item { flex-direction: column; text-align: center; padding: 40px 24px; }
+      .work-tag { margin-right: 0; margin-bottom: 20px; }
+      .work-item:hover { padding-left: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Rudaworks</div>
+    <ul class="nav-menu">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#problem">About</a></li>
+      <li><a href="#approach">Our Way</a></li>
+      <li><a href="#values">Values</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="hero-inner reveal">
+      <p style="letter-spacing: 12px; margin-bottom: 40px; opacity: 0.6; font-weight: 600;">RUDAWORKS</p>
+      <h1>마케팅은 다 비슷해 보이죠.<br><span>결과는 전혀 다릅니다.</span></h1>
+      <p>가장 정직한 제안으로 브랜드의 성장을 설계합니다.</p>
+    </div>
+  </section>
+
+  <section class="container reveal" id="problem">
+    <div class="problem-wrapper">
+      <h2 class="section-title">광고는 계속 하는데,<br><span class="highlight">왜 변화가 없으신가요?</span></h2>
+      <p class="section-desc">설명은 늘 어렵고, 결과보다 과정 이야기만 반복되는 마케팅.<br>결국 마케팅이 아니라 <b>'사람'</b>을 믿기 어려워지게 됩니다.</p>
+      <div class="problem-cards">
+        <div class="p-card"><i class="fas fa-user-slash"></i><h4>잦은 담당자 교체</h4><p>내 브랜드를 이해할만하면 바뀌는 담당자, 다시 처음부터 설명해야 하는 피로감.</p></div>
+        <div class="p-card"><i class="fas fa-arrow-trend-down"></i><h4>체감되지 않는 성과</h4><p>숫자는 올랐다는데 매출은 그대로인 상황, 실질적인 비즈니스 성장이 필요합니다.</p></div>
+        <div class="p-card"><i class="fas fa-comment-slash"></i><h4>불투명한 소통</h4><p>궁금한 건 많은데 연락은 안 되고, 보고서는 이해하기 힘든 전문 용어만 가득합니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="approach">
+    <div class="container reveal">
+      <h2 class="section-title">그래서 우리는 이렇게 합니다.</h2>
+      <p class="section-desc">복잡한 이론보다 실질적인 변화를 만듭니다.<br>루다웍스가 일하는 방식은 명확합니다.</p>
+      <div class="approach-grid">
+        <div class="approach-box"><div class="approach-num">1</div><h3>정직한 제안</h3><p>보여주기식 제안 대신, 브랜드에 꼭<br>필요한 것만 선별하여 진행합니다.</p></div>
+        <div class="approach-box"><div class="approach-num">2</div><h3>장기적 관점</h3><p>단기적인 숫자보다 운영과 이미지,<br>다음 단계까지 고려해 설계합니다.</p></div>
+        <div class="approach-box"><div class="approach-num">3</div><h3>맞춤형 전략</h3><p>마케팅은 많이 하는 것이 아니라,<br>상황에 맞게 최적화하는 일입니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-navy" id="values">
+    <div class="container reveal">
+      <h2 class="section-title" style="color:white">우리가 중요하게 생각하는 기준</h2>
+      <p class="section-desc" style="color:rgba(255,255,255,0.6)">마케팅은 결국 신뢰입니다. 투명한 소통을 최우선으로 합니다.</p>
+      <div class="values-grid">
+        <div class="value-card"><span class="icon">💬</span><h3>빠른 소통</h3><p>어떤 상황에서도 정확한<br>피드백을 지향합니다.</p></div>
+        <div class="value-card"><span class="icon">🚫</span><h3>정직함</h3><p>불필요한 광고는<br>절대 제안하지 않습니다.</p></div>
+        <div class="value-card"><span class="icon">📈</span><h3>성장 중심</h3><p>브랜드가 오래갈 수 있는<br>방향을 제시합니다.</p></div>
+        <div class="value-card"><span class="icon">🔄</span><h3>유연성</h3><p>변화하는 트렌드에 맞춰<br>전력을 유연하게 조정합니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="container reveal">
+      <h2 class="section-title">이런 일을 하고 있습니다.</h2>
+      <p class="section-desc">단순 대행을 넘어, 브랜드의 본질을 숫자로 증명합니다.</p>
+      <div class="work-list">
+        <div class="work-item">
+          <div class="work-tag">기획/브랜딩</div>
+          <div>
+            <h3>콘텐츠 기반 마케팅</h3>
+            <p>고객이 억지로 보게 만드는 광고가 아니라, 스스로 검색하고 신뢰하게 만드는 구조 설계입니다.<br>검색 의도를 분석하고, 브랜드의 강점을 설계해 '찾아오게 만드는 흐름'을 만듭니다.</p>
+          </div>
+        </div>
+        <div class="work-item">
+          <div class="work-tag">운영/관리</div>
+          <div>
+            <h3>브랜드 매니지먼트</h3>
+            <p>한 번의 바이럴이 아닌, 브랜드 이미지가 자연스럽게 쌓이는 운영 전략을 설계합니다.<br>리뷰·노출·평판을 체계적으로 관리해 신뢰가 자산이 되도록 만듭니다.</p>
+          </div>
+        </div>
+        <div class="work-item">
+          <div class="work-tag">최적화/기술</div>
+          <div>
+            <h3>검색 엔진 최적화 (SEO)</h3>
+            <p>결정적인 순간, 고객이 검색했을 때 가장 먼저 보이도록 만드는 기술적 설계 입니다.<br>광고비를 계속 쓰는 구조가 아니라, 검색 자산이 누적되는 구조를 만듭니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="container reveal">
+      <h2 class="section-title">진행 방식</h2>
+      <p class="section-desc">체계적인 프로세스로 브랜드의 성공을 설계합니다.<br>각 단계마다 명확한 목표와 결과를 공유합니다.</p>
+      <div class="process-container">
+        <div class="process-path"></div>
+        <div class="process-grid">
+          <div class="process-item"><div class="process-icon-box"><i class="fa-solid fa-users-rectangle"></i></div><h4>타겟 분석</h4><p>브랜드 맞춤<br>업종·상황에 맞춘 잠재고객 구체화</p></div>
+          <div class="process-item"><div class="process-icon-box"><i class="fa-solid fa-share-nodes"></i></div><h4>바이럴 설계</h4><p>콘텐츠 구조 및 확산 동선 설계</p></div>
+          <div class="process-item"><div class="process-icon-box"><i class="fa-solid fa-circle-check"></i></div><h4>품질 검수</h4><p>전담 부서의 로직·품질 점검</p></div>
+          <div class="process-item"><div class="process-icon-box"><i class="fa-solid fa-paper-plane"></i></div><h4>전략 고도화</h4><p>성과 데이터 기반<br>모니터링 및 전략 개선</p></div>
+
+          <div class="process-bottom-note">
+            <i class="fa-solid fa-bullhorn"></i>
+            <p>
+              모든 단계에서 투명한 보고와 실시간 피드백을 제공합니다.<br>
+              브랜드의 상황과 목표에 따라 유연하게 조정되는 프로세스로 최적의 결과를 만들어냅니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" id="contact" style="background: var(--light-bg); position: relative;">
+    <div class="container">
+      <div class="cta-card">
+        <h2 class="section-title" style="font-size: 52px;">이론적인 마케팅이 아닌,<br><span class="highlight">가장 현실적인 방향</span>을 제안드립니다.</h2>
+        <p class="section-desc">대표님의 브랜드가 지금 바로 실행할 수 있고,<br>결과로 증명되는 전략만을 약속합니다.</p>
+          <a href="https://open.kakao.com/o/sXXXXXXXX" target="_blank" class="cta-btn">
+<i class="fa-solid fa-comment-dots" style="margin-right: 15px;"></i> 1:1 카톡 상담 신청하기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-flex">
+      <div><h2 style="font-size:48px; margin-bottom:20px; font-weight: 800;">Rudaworks</h2><p style="opacity:0.4; letter-spacing:5px;">INTEGRATED ADVERTISING COMPANY</p></div>
+      <ul class="biz-card">
+        <li class="name">이루다 <span style="font-weight:400; font-size:18px; margin-left:15px; opacity: 0.6;">대표</span></li>
+        <li><i class="fa-regular fa-envelope" style="margin-right:12px; color:var(--accent);"></i> rudaworks@naver.com</li>
+        <li><i class="fa-solid fa-phone" style="margin-right:12px; color:var(--accent);"></i> 010-4876-8093</li>
+        <li><i class="fa-solid fa-location-dot" style="margin-right:12px; color:var(--accent);"></i> 수원시 팔달구 인계동 940-18 MJ아이티밸리 1509호</li>
+      </ul>
+    </div>
+    <p style="text-align:center; margin-top:120px; opacity:0.2;">© 2026 Rudaworks. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
